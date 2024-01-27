@@ -17,7 +17,7 @@ import gradio as gr
 from transformers import pipeline
 from datasets import DatasetDict
 
-os.environ["OPENAI_API_KEY"] = "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"
+os.environ["OPENAI_API_KEY"] = "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"
 
 reader = load_dataset("orderlymirror/The_48_Laws_Of_Power")
 reader = PdfReader('/content/drive/MyDrive/llm/48lawsofpower.pdf')
