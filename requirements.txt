@@ -1,0 +1,9 @@
+PyPDF2
+transformers
+langchain
+openai
+faiss-cpu
+tiktoken
+datasets
+gradio
+pydantic
