@@ -1,12 +1,3 @@
-!pip install langchain
-!pip install openai
-!pip install PyPDF2
-!pip install faiss-cpu
-!pip install tiktoken
-!pip install datasets
-!pip install gradio
-!pip install pydantic
-
 from PyPDF2 import PdfReader
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.text_splitter import CharacterTextSplitter
@@ -20,7 +11,7 @@ from datasets import DatasetDict
 os.environ["OPENAI_API_KEY"] = "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"
 
 reader = load_dataset("orderlymirror/The_48_Laws_Of_Power")
-reader = PdfReader('/content/drive/MyDrive/llm/48lawsofpower.pdf')
+reader = PdfReader('48lawsofpower.pdf')
 
 raw_text = ''
 for i, page in enumerate(reader.pages):
@@ -44,7 +35,18 @@ docsearch = FAISS.from_texts(texts, embeddings)
 from langchain.chains.question_answering import load_qa_chain
 from langchain.llms import OpenAI
         
-        
-query = "“Can you give me an example from history where the enemy was crushed totallyfrom the book?"
-docs = docsearch.similarity_search(query)
-chain.run(input_documents=docs, question=query)
+chain = load_qa_chain(OpenAI(), chain_type="stuff")
+
+def interactive_search(query):
+    docs = docsearch.similarity_search(query)
+   
+    result = chain.run(input_documents=docs, question=query)
+    
+    return result
+
+iface = gr.Interface(interactive_search, 
+                     inputs="text",
+                     outputs="text",
+                     title="text generator",
+                     description="Enter any query from the document 48 laws of power.")
+iface.launch()
